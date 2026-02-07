@@ -36,6 +36,19 @@ Assets/
 
 ---
 
+## Global Build Rules (Applied to Every Phase)
+- Build in **phases** that compile independently.
+- Use **modular architecture** with **Manager pattern** and a shared **GameEventBus**.
+- Store tunables in **ScriptableObject** configs.
+- Use **event-driven messaging** to avoid tight coupling.
+- Use **object pooling** for runtime instantiation-heavy systems.
+- Prefer **async loading** (scene streaming, city chunks, replay buffers).
+- Expose **Inspector tuning variables** for designers.
+- Provide **prefab wiring** and **scene setup** steps.
+- No paid assets required.
+
+---
+
 ## PHASE GROUP A — CORE FOUNDATION
 
 ### A1 — Boot System
@@ -326,6 +339,19 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Economy/*.cs`
 
+**Prefab Components List**
+- Persistent Manager: `EconomyManager`
+- Persistent Manager: `ProgressionManager`
+- Persistent Manager: `SkillTreeSystem`
+
+**Scene Wiring Steps**
+1. Attach `EconomyManager`, `ProgressionManager`, and `SkillTreeSystem` under `PersistentManagers`.
+2. Wire `EconomyManager` to UI widgets (wallet, rewards).
+
+**Inspector Values**
+- `EconomyManager.startingCurrency`: `5000`
+- `ProgressionManager.startingLevel`: `1`
+
 **Test Procedure**
 - Award XP and currency; verify level-ups.
 
@@ -363,10 +389,24 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Multiplayer/*.cs`
 
+**Prefab Components List**
+- `MultiplayerManager` (manager)
+- `LobbyManager` (manager)
+- `NetworkVehicle` (on vehicle prefab)
+- `NetworkRaceManager` (manager)
+
 **Setup Steps**
 1. Install **Unity Netcode for GameObjects** from Package Manager.
 2. Define `UNITY_NETCODE` scripting define symbol.
 3. Implement NetworkBehaviour logic in provided scripts.
+
+**Scene Wiring Steps**
+1. Add `MultiplayerManager` and `LobbyManager` under `PersistentManagers`.
+2. Add `NetworkVehicle` to the player vehicle prefab and register it with `NetworkManager`.
+
+**Inspector Values**
+- `NetworkVehicle.syncRate`: `30`
+- `LobbyManager.maxPlayers`: `16`
 
 **Test Procedure**
 - Start a host session and connect a client.
@@ -384,9 +424,19 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/UI/*.cs`
 
+**Prefab Components List**
+- `UIManager` (manager)
+- `HUDSystem` on HUD canvas
+- `MinimapSystem` on minimap camera
+- `GPSNavigator` on UI navigation root
+
 **Scene Wiring Steps**
 1. Create HUD canvas.
 2. Assign widgets to `HUDSystem`.
+
+**Inspector Values**
+- `HUDSystem.speedText`: assign TMP_Text reference
+- `HUDSystem.rpmText`: assign TMP_Text reference
 
 **Test Procedure**
 - Update HUD speed/RPM via script and confirm UI updates.
@@ -403,6 +453,20 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Audio/*.cs`
 
+**Prefab Components List**
+- `AudioManager` (manager)
+- `EngineAudioController` on vehicle prefab
+- `AmbientZoneSystem` on zone volumes
+
+**Scene Wiring Steps**
+1. Attach `AudioManager` under `PersistentManagers`.
+2. Place `AmbientZoneSystem` triggers in city districts.
+3. Assign engine audio clips to `EngineAudioController`.
+
+**Inspector Values**
+- `EngineAudioController.minPitch`: `0.8`
+- `EngineAudioController.maxPitch`: `2.0`
+
 **Test Procedure**
 - Play engine and ambient clips using runtime controls.
 
@@ -418,6 +482,19 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Performance/*.cs`
 
+**Prefab Components List**
+- `PoolManager` (manager)
+- `PerformanceManager` (manager)
+- `AIBudgetManager` (manager)
+
+**Scene Wiring Steps**
+1. Attach `PoolManager`, `PerformanceManager`, and `AIBudgetManager` under `PersistentManagers`.
+2. Register pooled prefabs in `PoolManager`.
+
+**Inspector Values**
+- `PerformanceManager.targetFrameRate`: `60`
+- `AIBudgetManager.maxActiveAgents`: `50`
+
 **Test Procedure**
 - Spawn/despawn pooled objects and confirm reuse.
 
@@ -432,6 +509,17 @@ Assets/
 
 **Folder Placement**
 - `Assets/Scripts/Tooling/Editor/*.cs`
+
+**Prefab Components List**
+- Editor-only tools are accessed from the Unity menu.
+
+**Scene Wiring Steps**
+1. Open `OpenWorldDriving/City Editor` to preview city layout.
+2. Open `OpenWorldDriving/Mission Editor` to configure mission graphs.
+3. Open `OpenWorldDriving/Vehicle Editor` to adjust stats.
+
+**Inspector Values**
+- Editor tool windows expose default parameters for preview generation.
 
 **Test Procedure**
 - Open tools via `OpenWorldDriving/` menu and validate editor UI.
