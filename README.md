@@ -326,6 +326,21 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Economy/*.cs`
 
+**Prefab Components List**
+- Persistent Manager: `EconomyManager`
+- Persistent Manager: `ProgressionManager`
+- Persistent Manager: `SkillTreeSystem`
+
+**Scene Wiring Steps**
+1. Add the three managers under `PersistentManagers`.
+2. Create a default skill tree in `SkillTreeSystem` (Inspector list).
+3. Reference `EconomyManager` from reward providers (missions, police fines, race payouts).
+
+**Inspector Values**
+- `EconomyManager.startingCurrency`: `2500`
+- `ProgressionManager.xpPerLevel`: `1000`
+- `SkillTreeSystem.maxSkillPoints`: `25`
+
 **Test Procedure**
 - Award XP and currency; verify level-ups.
 
@@ -342,10 +357,19 @@ Assets/
 - `Assets/Scripts/Weather/*.cs`
 - `Assets/Scripts/ScriptableObjects/LightingProfileSO.cs`
 
+**Prefab Components List**
+- Scene System: `DayNightSystem`
+- Scene System: `WeatherManager`
+
 **Scene Wiring Steps**
 1. Create `LightingProfileSO` asset.
 2. Assign gradients and curve.
 3. Assign directional light.
+
+**Inspector Values**
+- `DayNightSystem.dayLengthMinutes`: `30`
+- `WeatherManager.defaultWeather`: `Clear`
+- `WeatherManager.rainTrafficDensityMultiplier`: `0.7`
 
 **Test Procedure**
 - Run scene and confirm lighting changes over time.
@@ -368,6 +392,21 @@ Assets/
 2. Define `UNITY_NETCODE` scripting define symbol.
 3. Implement NetworkBehaviour logic in provided scripts.
 
+**Prefab Components List**
+- Network root: `MultiplayerManager`
+- Lobby UI root: `LobbyManager`
+- Network vehicle prefab: `NetworkVehicle` + `NetworkObject`
+- Race coordinator: `NetworkRaceManager`
+
+**Scene Wiring Steps**
+1. Add `MultiplayerManager` to a persistent root.
+2. Assign the networked vehicle prefab to `MultiplayerManager`.
+3. Place `NetworkRaceManager` in the race scene.
+
+**Inspector Values**
+- `MultiplayerManager.maxPlayers`: `16`
+- `LobbyManager.lobbySceneName`: `Lobby`
+
 **Test Procedure**
 - Start a host session and connect a client.
 
@@ -384,9 +423,21 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/UI/*.cs`
 
+**Prefab Components List**
+- UI Canvas root
+  - `UIManager`
+  - `HUDSystem`
+  - `MinimapSystem`
+  - `GPSNavigator`
+
 **Scene Wiring Steps**
 1. Create HUD canvas.
 2. Assign widgets to `HUDSystem`.
+
+**Inspector Values**
+- `HUDSystem.speedText`: assign TMP text
+- `MinimapSystem.minimapCamera`: assign minimap camera
+- `GPSNavigator.updateInterval`: `0.25`
 
 **Test Procedure**
 - Update HUD speed/RPM via script and confirm UI updates.
@@ -403,6 +454,21 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Audio/*.cs`
 
+**Prefab Components List**
+- Scene Audio root
+  - `AudioManager`
+  - `EngineAudioController`
+  - `AmbientZoneSystem`
+
+**Scene Wiring Steps**
+1. Create `AudioManager` and assign mixer/group outputs.
+2. Attach `EngineAudioController` to the player vehicle and assign clips.
+3. Add `AmbientZoneSystem` to scene with zone triggers.
+
+**Inspector Values**
+- `EngineAudioController.enginePitchRange`: `0.8 - 2.0`
+- `AmbientZoneSystem.fadeTime`: `2`
+
 **Test Procedure**
 - Play engine and ambient clips using runtime controls.
 
@@ -418,6 +484,21 @@ Assets/
 **Folder Placement**
 - `Assets/Scripts/Performance/*.cs`
 
+**Prefab Components List**
+- Persistent Manager: `PoolManager`
+- Persistent Manager: `PerformanceManager`
+- Persistent Manager: `AIBudgetManager`
+
+**Scene Wiring Steps**
+1. Add all three managers under `PersistentManagers`.
+2. Register pooled prefabs in `PoolManager`.
+3. Assign AI categories to `AIBudgetManager`.
+
+**Inspector Values**
+- `PoolManager.defaultCapacity`: `32`
+- `PerformanceManager.targetFrameRate`: `60`
+- `AIBudgetManager.maxActiveAgents`: `75`
+
 **Test Procedure**
 - Spawn/despawn pooled objects and confirm reuse.
 
@@ -432,6 +513,17 @@ Assets/
 
 **Folder Placement**
 - `Assets/Scripts/Tooling/Editor/*.cs`
+
+**Prefab Components List**
+- Not applicable (Editor windows only).
+
+**Scene Wiring Steps**
+1. Open `OpenWorldDriving/City Tool` to preview district layouts.
+2. Open `OpenWorldDriving/Mission Tool` to edit mission graphs.
+3. Open `OpenWorldDriving/Vehicle Tool` to edit vehicle stats.
+
+**Inspector Values**
+- Tool windows use default values.
 
 **Test Procedure**
 - Open tools via `OpenWorldDriving/` menu and validate editor UI.
