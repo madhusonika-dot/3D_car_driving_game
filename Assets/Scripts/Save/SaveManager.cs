@@ -44,6 +44,11 @@ namespace OpenWorldDriving.SaveSystem
                     return CreateDefaultProfile(profileSlot);
                 }
 
+                if (data.settings == null)
+                {
+                    data.settings = new List<SettingsEntry>();
+                }
+
                 return data;
             }
             catch (Exception)
