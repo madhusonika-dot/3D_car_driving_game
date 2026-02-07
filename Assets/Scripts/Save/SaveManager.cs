@@ -74,7 +74,7 @@ namespace OpenWorldDriving.SaveSystem
                 profileSlot = slot,
                 version = CurrentVersion,
                 lastPlayed = DateTime.UtcNow.ToString("o"),
-                settings = new Dictionary<string, float>()
+                settings = new List<SettingsEntry>()
             };
         }
     }
@@ -88,6 +88,52 @@ namespace OpenWorldDriving.SaveSystem
         public int profileSlot;
         public int version;
         public string lastPlayed;
-        public Dictionary<string, float> settings = new Dictionary<string, float>();
+        public List<SettingsEntry> settings = new List<SettingsEntry>();
+
+        public Dictionary<string, float> GetSettingsDictionary()
+        {
+            var result = new Dictionary<string, float>();
+            if (settings == null)
+            {
+                return result;
+            }
+
+            foreach (var entry in settings)
+            {
+                if (entry == null || string.IsNullOrEmpty(entry.key))
+                {
+                    continue;
+                }
+
+                result[entry.key] = entry.value;
+            }
+
+            return result;
+        }
+
+        public void SetSettingsDictionary(Dictionary<string, float> source)
+        {
+            settings = new List<SettingsEntry>();
+            if (source == null)
+            {
+                return;
+            }
+
+            foreach (var pair in source)
+            {
+                settings.Add(new SettingsEntry
+                {
+                    key = pair.Key,
+                    value = pair.Value
+                });
+            }
+        }
+    }
+
+    [Serializable]
+    public class SettingsEntry
+    {
+        public string key;
+        public float value;
     }
 }

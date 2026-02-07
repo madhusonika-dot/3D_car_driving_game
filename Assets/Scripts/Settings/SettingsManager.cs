@@ -40,7 +40,7 @@ namespace OpenWorldDriving.Settings
             }
 
             var data = saveManager.LoadProfile(activeProfileSlot);
-            data.settings = new Dictionary<string, float>(settings);
+            data.SetSettingsDictionary(new Dictionary<string, float>(settings));
             saveManager.SaveProfile(data);
         }
 
@@ -54,7 +54,7 @@ namespace OpenWorldDriving.Settings
 
             var data = saveManager.LoadProfile(activeProfileSlot);
             settings.Clear();
-            foreach (var pair in data.settings)
+            foreach (var pair in data.GetSettingsDictionary())
             {
                 settings[pair.Key] = pair.Value;
             }
